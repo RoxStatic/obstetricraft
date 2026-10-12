@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Obstetricraft: Aventura de la Vida</title>
+<style>
+:root{--pink:#ff6fb5;--purple:#49347f;--dark:#201c3d;--mint:#baf5df;--cream:#fff8e9;--gold:#ffd66b}
+*{box-sizing:border-box} body{margin:0;background:#201c3d;color:#fff;font-family:Verdana,Arial,sans-serif}
+button{font:inherit;cursor:pointer;border:2px solid #fff6;border-radius:12px;padding:10px 15px;background:var(--pink);color:#321d4d;font-weight:800;box-shadow:0 4px 0 #a33e87;transition:.12s}
+button:hover{transform:translateY(-2px);filter:brightness(1.06)} button:active{transform:translateY(2px);box-shadow:none}
+button.secondary{background:#6e5db1;color:white;box-shadow:0 4px 0 #34265e} button.green{background:var(--mint);box-shadow:0 4px 0 #5fae9a}
+header{padding:15px 5vw;background:#17142e;border-bottom:3px solid #6e5db1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.logo{font-size:clamp(20px,4vw,34px);font-weight:1000;letter-spacing:1px;color:#ffb4dc;text-shadow:3px 3px #7e367d}.logo small{display:block;font-size:12px;color:#fff;letter-spacing:2px}
+.stats{display:flex;gap:9px;flex-wrap:wrap}.pill{background:#342957;border:1px solid #7869ad;padding:8px 12px;border-radius:20px;font-weight:bold}
+main{max-width:1150px;margin:auto;padding:22px 16px 40px}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:stretch}
+.panel{background:#302751;border:2px solid #7162a6;border-radius:18px;padding:20px;box-shadow:0 8px 0 #17142e}
+h1,h2,h3,p{margin-top:0} h1{font-size:clamp(28px,4vw,46px);margin-bottom:8px} h2{color:#ffd5ea} .sub{color:#ded7f7;line-height:1.55}
+.scene{min-height:275px;border:3px solid #fff8;border-radius:15px;overflow:hidden;position:relative;background:linear-gradient(#91d7f5 0 48%,#7fcf89 48% 70%,#4d9d62 70%);display:flex;align-items:center;justify-content:center}
+.cloud{position:absolute;width:75px;height:24px;background:#fff;border-radius:30px;top:25px;left:15%;box-shadow:18px 6px 0 #fff}.cloud.c2{left:70%;top:55px;transform:scale(.8)}
+.sun{position:absolute;right:14%;top:18px;width:48px;height:48px;border-radius:50%;background:#ffe68c;box-shadow:0 0 0 8px #fff3}
+.pixelhouse{position:absolute;bottom:55px;width:145px;height:105px;background:#f3a9bd;border:6px solid #7b497b;left:12%;box-shadow:inset 0 -17px #d47e9e}
+.pixelhouse:before{content:"";position:absolute;left:-18px;top:-38px;border-left:84px solid transparent;border-right:84px solid transparent;border-bottom:42px solid #9b567f}
+.pixelhouse:after{content:"✚";position:absolute;right:12px;top:15px;background:white;color:#ed638c;font-size:22px;padding:3px}
+.tree{position:absolute;bottom:60px;right:13%;width:22px;height:70px;background:#81533b}.tree:before{content:"";position:absolute;left:-24px;top:-35px;width:70px;height:70px;background:#43a86a;border:5px solid #2d7b54;clip-path:polygon(50% 0,100% 45%,78% 45%,100% 80%,0 80%,22% 45%,0 45%)}
+.avatar{position:relative;z-index:2;font-size:95px;filter:drop-shadow(5px 6px 0 #0003);margin-top:35px}.speech{position:absolute;z-index:3;bottom:10px;left:10px;right:10px;text-align:center;background:#fff8e9;color:#38284f;padding:10px;border-radius:12px;font-size:13px;font-weight:bold}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px}.level{padding:0;overflow:hidden;background:#302751;border:2px solid #7566a7;border-radius:16px}.level .art{height:100px;display:flex;align-items:center;justify-content:center;font-size:54px;background:linear-gradient(#a7e4ff,#7ed69b)}.level:nth-child(2) .art{background:linear-gradient(#c7d9ff,#8fcebd)}.level:nth-child(3) .art{background:linear-gradient(#e9b7ff,#f6b3c8)}.level .inside{padding:14px}.level p{font-size:13px;line-height:1.45;color:#e4def9}.level button{width:100%}.tag{display:inline-block;border-radius:20px;padding:4px 8px;background:#baf5df;color:#254c49;font-size:11px;font-weight:bold;margin-bottom:8px}
+.hidden{display:none!important}.gamegrid{display:grid;grid-template-columns:1fr 300px;gap:15px;margin-top:20px}.gamearea{min-height:350px}.quest{line-height:1.6}.answers{display:grid;gap:9px;margin:16px 0}.answers button{text-align:left;background:#f4f0ff;color:#32264e;box-shadow:0 3px 0 #a49acb}.answers button.correct{background:#baf5df}.answers button.wrong{background:#ffc1d0}.feedback{padding:12px;border-radius:10px;background:#423766;line-height:1.5;margin:10px 0}.progress{height:12px;background:#17142e;border-radius:20px;overflow:hidden;margin:12px 0}.progress div{height:100%;background:linear-gradient(90deg,#ff73b9,#ffd66b);width:0%;transition:width .3s}.maptiles{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:16px 0}.tile{aspect-ratio:1;background:#6fc77a;border:2px solid #4a9c62;border-radius:4px;display:grid;place-items:center;font-size:clamp(14px,3vw,25px)}.tile.path{background:#d7b77d;border-color:#ad8958}.tile.building{background:#f1a7c2;border-color:#a65c87}.tile.locked{background:#55506d;border-color:#423a5f;filter:grayscale(.5)}
+footer{text-align:center;color:#c8c0e7;font-size:12px;margin-top:22px;line-height:1.6}
+@media(max-width:760px){.hero,.gamegrid{grid-template-columns:1fr}.levels{grid-template-columns:1fr}.level{display:grid;grid-template-columns:100px 1fr}.level .art{height:100%;min-height:160px}.scene{min-height:250px}}
+</style>
+</head>
+<body>
+<header><div class="logo">💗 OBSTETRICRAFT <small>AVENTURA DE LA VIDA</small></div><div class="stats"><div class="pill">⭐ Puntos: <span id="points">0</span></div><div class="pill">🏅 Nivel: <span id="rank">Aprendiz</span></div></div></header>
+<main>
+<section id="home">
+ <div class="hero">
+  <div class="panel"><h1>Pequeños pasos,<br><span style="color:#ff9bcf">grandes vidas.</span></h1><p class="sub">¡Hola, obstetra! Explora un mundo de bloques, ayuda a tus pacientes y aprende sobre salud materna y neonatal a través de misiones.</p><button onclick="startGame(0)">▶ JUGAR AHORA</button> <button class="secondary" onclick="showHelp()">¿Cómo se juega?</button><p class="sub" style="font-size:12px;margin-top:18px">Juego educativo de práctica. Las situaciones son simuladas y no sustituyen protocolos clínicos ni la atención profesional.</p></div>
+  <div class="scene"><div class="cloud"></div><div class="cloud c2"></div><div class="sun"></div><div class="pixelhouse"></div><div class="tree"></div><div class="avatar">👩🏽‍⚕️</div><div class="speech">¡Soy Luna! ¿Lista para ayudar a Sofía? 🌸</div></div>
+ </div>
+ <h2 style="margin-top:28px">🌍 Elige tu mundo</h2>
+ <div class="levels">
+  <div class="level"><div class="art">🏡🌷</div><div class="inside"><span class="tag">BÁSICO</span><h3>Pueblo Materno</h3><p>Aprende los cuidados prenatales y reconoce signos de alarma.</p><button onclick="startGame(0)">Explorar</button></div></div>
+  <div class="level"><div class="art">🏥🩺</div><div class="inside"><span class="tag" style="background:#ffe19a">INTERMEDIO</span><h3>Centro de Salud</h3><p>Practica conocimientos de evaluación prenatal y maniobras de Leopold.</p><button onclick="startGame(1)">Explorar</button></div></div>
+  <div class="level"><div class="art">👶💖</div><div class="inside"><span class="tag" style="background:#ffb7ca">AVANZADO</span><h3>Hospital de la Vida</h3><p>Resuelve desafíos de emergencias obstétricas y cuidado neonatal.</p><button onclick="startGame(2)">Explorar</button></div></div>
+ </div>
+</section>
+<section id="play" class="hidden">
+ <button class="secondary" onclick="goHome()">← Menú principal</button>
+ <div class="gamegrid">
+  <div class="panel gamearea"><div id="worldTitle"></div><div class="maptiles" id="map"></div><div id="questArea"></div></div>
+  <aside class="panel"><h2>🎒 Tu mochila</h2><p>🩺 Estetoscopio</p><p>📏 Cinta obstétrica</p><p>📋 Cuaderno de control</p><p>💗 Corazón de empatía</p><hr style="border-color:#7566a7"><h3>⭐ Progreso</h3><div class="progress"><div id="bar"></div></div><p id="progressText" class="sub">Misión 1 de 3</p><div class="feedback">💡 <b>Consejo de Aurora:</b><br>Lee cada situación con calma. En la atención real, sigue los protocolos locales y solicita apoyo profesional cuando corresponda.</div></aside>
+ </div>
+</section>
+<section id="help" class="hidden panel"><h2>🎮 ¿Cómo se juega?</h2><p>1. Elige uno de los tres mundos.</p><p>2. Lee la misión de Luna y ayuda a los personajes.</p><p>3. Elige una respuesta. Si fallas, recibirás una explicación y podrás continuar aprendiendo.</p><p>4. Consigue estrellas para subir de rango.</p><button onclick="goHome()">¡Entendido!</button></section>
+<section id="ending" class="hidden panel" style="text-align:center"><div style="font-size:70px">🏆👩🏽‍⚕️💗</div><h1>¡Misión completada!</h1><p class="sub">Has demostrado empatía, atención y ganas de aprender. ¡Una futura guardiana de la vida!</p><h2 id="finalScore"></h2><button onclick="startGame(0)">Volver a jugar</button> <button class="secondary" onclick="goHome()">Menú principal</button></section>
+<footer>OBSTETRICRAFT · Aventura de la Vida<br>Contenido educativo simulado para estudiantes. En situaciones reales, busca atención profesional y sigue las guías clínicas vigentes.</footer>
+</main>
+<script>
+const levels=[
+ {title:"🌷 Nivel 1 · Pueblo Materno",name:"Misión: La primera visita de Sofía",intro:"Sofía descubre que está embarazada y llega al centro de salud para recibir orientación.",qs:[
+ {q:"¿Qué es lo más importante al iniciar el control prenatal?",a:["Esperar hasta que tenga molestias","Realizar una evaluación inicial y programar controles prenatales","Tomar medicamentos por cuenta propia"],c:1,why:"¡Correcto! La evaluación prenatal temprana permite conocer el estado de salud, identificar riesgos y planificar el seguimiento."},
+ {q:"Sofía presenta sangrado vaginal durante el embarazo. ¿Qué debe hacer?",a:["Ignorarlo si es poco","Esperar varios días","Buscar evaluación médica urgente"],c:2,why:"El sangrado vaginal durante el embarazo requiere valoración profesional oportuna. No se debe minimizar."},
+ {q:"¿Cuál es una buena práctica durante el control prenatal?",a:["Resolver dudas y brindar información clara y respetuosa","Evitar que la paciente haga preguntas","Indicar tratamientos sin evaluación"],c:0,why:"La comunicación respetuosa y la educación clara favorecen la atención centrada en la paciente."}]},
+ {title:"🩺 Nivel 2 · Centro de Salud",name:"Misión: Evaluación prenatal",intro:"La obstetra Luna acompaña a Sofía en una consulta simulada para repasar conocimientos.",qs:[
+ {q:"¿Para qué se utilizan las maniobras de Leopold?",a:["Para medir la glucosa","Para palpar el abdomen y estimar situación, presentación y posición fetal","Para diagnosticar cualquier enfermedad fetal"],c:1,why:"Las maniobras de Leopold son una serie de palpaciones abdominales que ayudan a valorar la situación y presentación fetal, entre otros datos."},
+ {q:"¿Qué instrumento se usa habitualmente para medir la altura uterina?",a:["Cinta métrica obstétrica","Termómetro","Martillo de reflejos"],c:0,why:"La cinta métrica obstétrica permite medir la altura uterina como parte de la evaluación prenatal, interpretándola según la edad gestacional y el contexto."},
+ {q:"Una gestante tiene dolor de cabeza intenso y visión borrosa. ¿Qué corresponde?",a:["Decirle que es normal","Recomendar que duerma y no consultar","Solicitar evaluación médica urgente"],c:2,why:"El dolor de cabeza intenso y las alteraciones visuales pueden ser señales de alarma, incluida una complicación hipertensiva. Requieren evaluación urgente."}]},
+ {title:"💖 Nivel 3 · Hospital de la Vida",name:"Misión: Proteger dos vidas",intro:"En esta simulación, el equipo debe reconocer señales de peligro y actuar con rapidez.",qs:[
+ {q:"Durante el embarazo, la paciente presenta convulsiones. ¿Cuál es la prioridad?",a:["Activar atención de emergencia de inmediato","Dejarla sola para buscar sus documentos","Esperar a que termine la consulta"],c:0,why:"Las convulsiones durante el embarazo son una emergencia. Se debe activar atención inmediata y seguir el protocolo clínico."},
+ {q:"¿Qué principio debe guiar la atención durante el trabajo de parto?",a:["Ignorar las preferencias de la paciente","Brindar atención respetuosa, segura y basada en evaluación clínica","Realizar procedimientos sin explicar"],c:1,why:"La atención debe ser respetuosa, informada y segura, de acuerdo con las necesidades clínicas y las preferencias de la paciente."},
+ {q:"Después del nacimiento, ¿qué es importante en la atención inicial del recién nacido?",a:["Valorar su respiración y estado general y mantenerlo abrigado","Bañarlo inmediatamente en todos los casos","Dejarlo sin supervisión"],c:0,why:"La valoración inmediata, la prevención de la pérdida de calor y el apoyo oportuno son esenciales; las acciones específicas dependen del estado del bebé y del protocolo."}]}
+];
+let levelIndex=0,qIndex=0,points=0,answered=false;
+function show(id){['home','play','help','ending'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'smooth'})}
+function goHome(){show('home')}
+function showHelp(){show('help')}
+function startGame(n){levelIndex=n;qIndex=0;answered=false;show('play');renderQuestion()}
+function renderQuestion(){
+ const L=levels[levelIndex],q=L.qs[qIndex];document.getElementById('worldTitle').innerHTML=`<h2>${L.title}</h2><p class="sub">${L.intro}</p><div class="tag">Misión ${qIndex+1} de ${L.qs.length}</div>`;
+ const map=document.getElementById('map');map.innerHTML='';for(let i=0;i<21;i++){let d=document.createElement('div');d.className='tile '+([3,4,10,11,17].includes(i)?'path':'')+([5,12].includes(i)?'building':'');d.textContent=([3,4,10,11,17].includes(i)?'🟫':[5].includes(i)?'🏥':[12].includes(i)?'🌳':i===8?'👩🏽‍⚕️':i===16?'💗':'🌿');map.appendChild(d)}
+ document.getElementById('questArea').innerHTML=`<h3>📜 ${L.name}</h3><div class="panel quest" style="background:#40345f;padding:14px"><b>${q.q}</b><div class="answers">${q.a.map((a,i)=>`<button onclick="answer(${i})" id="ans${i}">${['A','B','C'][i]}. ${a}</button>`).join('')}</div><div id="feedback" class="feedback hidden"></div><button id="next" class="green hidden" onclick="nextQuestion()">Continuar →</button></div>`;
+ document.getElementById('bar').style.width=((qIndex)/L.qs.length*100)+'%';document.getElementById('progressText').textContent=`Misión ${qIndex+1} de ${L.qs.length}`;answered=false;
+}
+function answer(i){if(answered)return;answered=true;const q=levels[levelIndex].qs[qIndex],f=document.getElementById('feedback');let correct=i===q.c;if(correct){points+=10;document.getElementById('ans'+i).classList.add('correct')}else{document.getElementById('ans'+i).classList.add('wrong');document.getElementById('ans'+q.c).classList.add('correct')}document.getElementById('points').textContent=points;document.getElementById('rank').textContent=points>=60?'Guardiana':points>=30?'Exploradora':'Aprendiz';f.classList.remove('hidden');f.innerHTML=(correct?'⭐ ¡Muy bien! ':'💡 ¡Aprendamos! ')+q.why;document.getElementById('next').classList.remove('hidden');document.querySelectorAll('.answers button').forEach(b=>b.disabled=true)}
+function nextQuestion(){if(qIndex<levels[levelIndex].qs.length-1){qIndex++;renderQuestion()}else if(levelIndex<2){levelIndex++;qIndex=0;renderQuestion()}else{document.getElementById('finalScore').textContent=`Puntuación total: ${points} ⭐`;show('ending')}}
+</script>
+</body></html>
